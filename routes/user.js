@@ -4,11 +4,14 @@ var productHelper = require("../helpers/product-helpers");
 var userHelper = require("../helpers/user-helpers");
 
 /* GET home page. */
-router.get("/", function (req, res, next) {
+router.get("/", async function (req, res, next) {
   let user = req.session.user;
-
+  let cartCount=0  
+  if(req.session.user){
+  cartCount=await userHelper.getCartCount(req.session.user._id)
+  }
   productHelper.addAllProduct().then((products) => {
-    res.render("user/viewproduct-user", { products, admin: false, user });
+    res.render("user/viewproduct-user", { products, admin: false, user,cartCount });
   });
 });
 router.get("/login", (req, res) => {
@@ -53,21 +56,15 @@ router.get("/logout", (req, res) => {
   req.session.destroy();
   res.redirect("/");
 });
-// router.get('/cart', verifyLogin, async (req, res) => {
-//     console.log('session user:', req.session.user)  // ✅ add this
-//     let products = await userHelper.getCartProducts(req.session.user._id)
-//     console.log(products)
-//     res.render('user/cart', { products })
-// })
 router.get('/cart', verifyLogin, async (req, res) => {
     let products = await userHelper.getCartProducts(req.session.user._id)
     let totalPrice = 0
     products.forEach(item => {
         item.cartItems.forEach(product => {
-            totalPrice += parseInt(product.productPrice)  // ✅ convert to number
+            totalPrice += parseInt(product.productPrice)
         })
     })
-    res.render('user/cart', { products, user: req.session.user, totalPrice })
+    res.render('user/cart', { products, user: req.session.user, totalPrice ,cartCount})
 })
 router.get("/add-to-cart/:id", verifyLogin, (req, res) => {
   userHelper.addToCart(req.params.id, req.session.user._id).then(() => {
