@@ -1,0 +1,79 @@
+<section class="bg-light min-vh-100 py-5">
+  <div class="container">
+    <div class="row justify-content-center">
+      <div class="col-md-7">
+        <div class="card shadow-sm border-0 rounded-4 p-4">
+
+          <div class="text-center mb-4">
+            <h3 class="fw-bold">Edit Product</h3>
+            <p class="text-muted">Update the details below and save changes</p>
+          </div>
+
+          <form action="/admin/edit-product/{{product._id}}" method="POST" enctype="multipart/form-data">
+
+            <!-- Product Name -->
+            <div class="mb-3">
+              <label for="productName" class="form-label fw-semibold">Product Name</label>
+              <input type="text" class="form-control" id="productName" name="productName"
+                placeholder="Enter product name" value="{{product.productName}}" required/>
+            </div>
+
+            <!-- Category and Price -->
+            <div class="row mb-3">
+              <div class="col-md-6 mb-3 mb-md-0">
+                <label for="productCategory" class="form-label fw-semibold">Category</label>
+                <select class="form-select" id="productCategory" name="productCategory" required>
+                  <option disabled value="">Choose...</option>
+                  <option value="electronics" {{#if (eq product.productCategory 'electronics')}}selected{{/if}}>Electronics</option>
+                  <option value="mobile" {{#if (eq product.productCategory 'mobile')}}selected{{/if}}>Mobile</option>
+                  <option value="home" {{#if (eq product.productCategory 'home')}}selected{{/if}}>Home Goods</option>
+                  <option value="toys" {{#if (eq product.productCategory 'toys')}}selected{{/if}}>Toys</option>
+                </select>
+              </div>
+              <div class="col-md-6">
+                <label for="productPrice" class="form-label fw-semibold">Price</label>
+                <div class="input-group">
+                  <span class="input-group-text">₹</span>
+                  <input type="number" class="form-control" id="productPrice" name="productPrice"
+                    placeholder="0.00" step="0.01" value="{{product.productPrice}}" required/>
+                </div>
+              </div>
+            </div>
+
+            <!-- Description -->
+            <div class="mb-3">
+              <label for="productDescription" class="form-label fw-semibold">Description</label>
+              <textarea class="form-control" id="productDescription" name="productDescription"
+                rows="5" style="resize:vertical; min-height:120px;"
+                placeholder="Enter product description" required>{{product.productDescription}}</textarea>
+            </div>
+
+            <!-- Image Upload -->
+            <div class="mb-4">
+              <label class="form-label fw-semibold">Product Image</label>
+              <div class="d-flex align-items-center gap-3 mb-2">
+                <img src="/product-images/{{product._id}}.jpg" 
+                  alt="{{product.productName}}"
+                  style="width:100px; height:auto; object-fit:cover; border-radius:10px; border:1px solid #dee2e6;" id="imageView">
+               
+              </div>
+              <input class="form-control" type="file" id="productImage" name="Image" accept="image/*" onchange="viewImage(event)"/>
+            </div>
+
+            <!-- Buttons -->
+            <div class="d-grid gap-2 d-md-flex justify-content-md-end">
+              <a href="/admin" class="btn btn-outline-secondary px-4">Cancel</a>
+              <button type="submit" class="btn btn-primary px-4">Save Changes</button>
+            </div>
+
+          </form>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+<script>
+  function viewImage(event){
+    document.getElementById('imageView').src=URL.createObjectURL(event.target.files[0])
+  }
+</script>

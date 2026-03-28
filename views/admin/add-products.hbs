@@ -1,0 +1,126 @@
+<section class="bg-light min-vh-100 py-5">
+  <div class="container">
+    <div class="row justify-content-center">
+      <div class="col-md-7">
+        <div class="card shadow-sm border-0 rounded-4 p-4">
+          <h3 class="mb-4 text-center fw-bold">Add New Product</h3>
+          <form
+            action="/admin/add-product"
+            method="POST"
+            enctype="multipart/form-data"
+          >
+
+            <!-- Product Name -->
+            <div class="mb-3">
+              <label for="productName" class="form-label fw-semibold">Product
+                Name</label>
+              <input
+                type="text"
+                class="form-control"
+                id="productName"
+                name="productName"
+                placeholder="Enter product name"
+                required
+              />
+            </div>
+
+            <!-- Category and Price -->
+            <div class="row mb-3">
+              <div class="col-md-6 mb-3 mb-md-0">
+                <label
+                  for="productCategory"
+                  class="form-label fw-semibold"
+                >Category</label>
+                <select
+                  class="form-select"
+                  id="productCategory"
+                  name="productCategory"
+                  required
+                >
+                  <option selected disabled value="">Choose...</option>
+                  <option value="electronics">Electronics</option>
+                  <option value="mobile">Mobile</option>
+                  <option value="home">Home Goods</option>
+                  <option value="toys">Toys</option>
+                </select>
+              </div>
+              <div class="col-md-6">
+                <label
+                  for="productPrice"
+                  class="form-label fw-semibold"
+                >Price</label>
+                <div class="input-group">
+                  <span class="input-group-text">₹</span>
+                  <input
+                    type="number"
+                    class="form-control"
+                    id="productPrice"
+                    name="productPrice"
+                    placeholder="0.00"
+                    step="0.01"
+                    required
+                  />
+                </div>
+              </div>
+            </div>
+
+            <!-- Description -->
+            <div class="mb-3">
+              <label
+                for="productDescription"
+                class="form-label fw-semibold"
+              >Description</label>
+              <textarea
+                class="form-control"
+                id="productDescription"
+                name="productDescription"
+                rows="5"
+                style="resize:vertical; min-height:120px;"
+                placeholder="Enter product description"
+                required
+              ></textarea>
+            </div>
+
+            <!-- Image Upload -->
+            <div class="mb-4">
+              <label for="productImage" class="form-label fw-semibold">Product
+                Image</label>
+              <div class="d-flex align-items-center gap-3 mb-2"><img
+                  src=""
+                  alt=""
+                  style="width:150px; height:auto; object-fit:cover; border-radius:10px; border:1px solid #dee2e6;"
+                  id="imageView"
+                  hidden
+                />
+              </div>
+
+              <input
+                class="form-control"
+                type="file"
+                id="productImage"
+                name="Image"
+                accept="image/*"
+                onchange="viewImage(event)"
+                required
+              />
+            </div>
+
+            <!-- Buttons -->
+            <div class="d-grid gap-2 d-md-flex justify-content-md-end">
+              <a href="/admin" class="btn btn-outline-secondary px-4">Cancel</a>
+              <button type="submit" class="btn btn-primary px-4">Add Product</button>
+            </div>
+
+          </form>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+<script>
+  function viewImage(event) {
+    let imageView = document.getElementById('imageView')
+    imageView.src = URL.createObjectURL(event.target.files[0])
+    imageView.hidden = false
+  }
+</script>

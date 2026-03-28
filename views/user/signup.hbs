@@ -1,0 +1,86 @@
+<section class="bg-light min-vh-100 d-flex align-items-center">
+  <div class="container">
+    <div class="row justify-content-center">
+      <div class="col-md-5">
+        <div class="card shadow-sm border-0 rounded-4 p-4">
+
+          <h3 class="text-center fw-bold mb-1">Create Account</h3>
+          <p class="text-center text-muted mb-4">Sign up to get started</p>
+
+          <form action="/signup" method="POST">
+
+            <div class="mb-3">
+              <label for="name" class="form-label fw-semibold">Full Name</label>
+              <input
+                type="text"
+                class="form-control"
+                id="name"
+                name="name"
+                placeholder="Enter your name"
+                required
+              />
+            </div>
+
+            <div class="mb-3">
+              <label for="email" class="form-label fw-semibold">Email Address</label>
+              <input
+                type="email"
+                class="form-control"
+                id="email"
+                name="email"
+                placeholder="Enter your email"
+                required
+              />
+            </div>
+
+            <div class="mb-4">
+              <label
+                for="password"
+                class="form-label fw-semibold"
+              >Password</label>
+              <div class="input-group">
+                <input
+                  type="password"
+                  class="form-control"
+                  id="password"
+                  name="password"
+                  placeholder="Enter your password"
+                  required
+                />
+                <button
+                  class="btn btn-outline-secondary"
+                  type="button"
+                  onclick="togglePassword()"
+                >
+                  <i id="eyeIcon" class="bi bi-eye"></i>
+                </button>
+              </div>
+            </div>
+
+            <div class="d-grid">
+              <button type="submit" class="btn btn-primary btn-lg">Sign Up</button>
+            </div>
+
+            <p class="text-center text-muted mt-3 mb-0">Already have an account?
+              <a href="/login">Login</a></p>
+
+          </form>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<script>
+  function togglePassword() {
+    let input = document.getElementById('password')
+    let icon = document.getElementById('eyeIcon')
+    if (input.type === 'password') {
+      input.type = 'text'
+      icon.classList.replace('bi-eye', 'bi-eye-slash')
+    } else {
+      input.type = 'password'
+      icon.classList.replace('bi-eye-slash', 'bi-eye')
+    }
+  }
+</script>

@@ -1,0 +1,63 @@
+<section class="bg-light min-vh-100 py-5">
+  <div class="container">
+    <h3 class="fw-bold mb-4">My Cart</h3>
+    <div class="row g-4">
+
+      <!-- Cart Items -->
+      <div class="col-md-8">
+        <div class="card shadow-sm border-0 rounded-4">
+          <div class="card-body p-0">
+            {{#each products}}
+              {{#each this.cartItems}}
+              <div class="d-flex align-items-center p-3 border-bottom">
+                <img src="/product-images/{{this._id}}.jpg"
+                  alt="{{this.productName}}"
+                  style="width:90px; height:90px; object-fit:contain; border-radius:10px; background:#f8f9fa; padding:5px;">
+                <div class="ms-3 flex-grow-1">
+                  <h6 class="fw-bold mb-1">{{this.productName}}</h6>
+                  <span class="badge bg-secondary mb-1">{{this.productCategory}}</span>
+                  <p class="text-muted mb-0" style="font-size:0.85rem;">{{this.productDescription}}</p>
+                </div>
+                <div class="text-end ms-3">
+                  <h6 class="text-success fw-bold">₹{{this.productPrice}}</h6>
+                  <a href="/remove-from-cart/{{this._id}}" class="btn btn-sm btn-outline-danger mt-1">Remove</a>
+                </div>
+              </div>
+              {{/each}}
+            {{/each}}
+          </div>
+        </div>
+      </div>
+
+      <!-- Order Summary -->
+      <div class="col-md-4">
+        <div class="card shadow-sm border-0 rounded-4">
+          <div class="card-body">
+            <h5 class="fw-bold mb-3">Order Summary</h5>
+            <hr>
+            <div class="d-flex justify-content-between mb-2">
+              <span class="text-muted">Subtotal</span>
+              <span class="fw-semibold">₹{{totalPrice}}</span>
+            </div>
+            <div class="d-flex justify-content-between mb-2">
+              <span class="text-muted">Delivery</span>
+              <span class="text-success fw-semibold">Free</span>
+            </div>
+            <hr>
+            <div class="d-flex justify-content-between mb-3">
+              <span class="fw-bold">Total</span>
+              <span class="fw-bold text-success fs-5">₹{{totalPrice}}</span>
+            </div>
+            <div class="d-grid">
+              <a href="/checkout" class="btn btn-primary btn-lg">Proceed to Checkout</a>
+            </div>
+            <div class="d-grid mt-2">
+              <a href="/" class="btn btn-outline-secondary">Continue Shopping</a>
+            </div>
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</section>

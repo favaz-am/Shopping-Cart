@@ -1,0 +1,90 @@
+<section class="bg-light min-vh-100 py-5">
+  <div class="container">
+
+    <!-- Header -->
+    <div class="d-flex justify-content-between align-items-center mb-4">
+      <h3 class="fw-bold mb-0">All Products</h3>
+      <a href="/admin/add-products" class="btn btn-success px-4">+ Add New Product</a>
+    </div>
+
+    <!-- Table -->
+    <div class="card shadow-sm border-0 rounded-4">
+      <div class="card-body p-0">
+        <table class="table table-hover align-middle mb-0">
+          <thead class="table-dark">
+            <tr>
+              <th scope="col" class="ps-4">No</th>
+              <th scope="col">Image</th>
+              <th scope="col">Name</th>
+              <th scope="col">Category</th>
+              <th scope="col">Price</th>
+              <th scope="col">Description</th>
+              <th scope="col" class="text-center">Actions</th>
+            </tr>
+          </thead>
+          <tbody>
+            {{#each products}}
+            <tr>
+              <td class="ps-4 text-muted">{{increment @index}}</td>
+              <td>
+                <img src="/product-images/{{this._id}}.jpg"
+                  alt="{{this.productName}}"
+                  style="width:60px; height:60px; object-fit:cover; border-radius:8px;">
+              </td>
+              <td class="fw-semibold">{{this.productName}}</td>
+              <td><span class="badge bg-secondary">{{this.productCategory}}</span></td>
+              <td class="text-success fw-semibold">₹{{this.productPrice}}</td>
+              <td style="max-width:200px; word-wrap:break-word; font-size:0.85rem; color:#666;">{{this.productDescription}}</td>
+              <td class="text-center">
+                <a href="/admin/edit-product/{{this._id}}" class="btn btn-sm btn-outline-primary me-1">Edit</a>
+                <button onclick="confirmDelete('{{this._id}}')" class="btn btn-sm btn-outline-danger">Delete</button>
+              </td>
+            </tr>
+            {{/each}}
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+</section>
+<script>
+function confirmDelete(id) {
+    Swal.fire({
+        title: 'Are you sure?',
+        text: "You can restore it later!",
+        icon: 'warning',
+        showCancelButton: true,
+        confirmButtonColor: '#d33',
+        cancelButtonColor: '#6c757d',
+        confirmButtonText: 'Yes, delete it!',
+        cancelButtonText: 'Cancel'
+    }).then((result) => {
+        if (result.isConfirmed) {
+            fetch('/admin/delete-product/' + id).then(() => {
+                Swal.fire({
+                    title: 'Deleted!',
+                    text: 'Product has been deleted.',
+                    icon: 'success',
+                    showCancelButton: true,
+                    confirmButtonColor: '#d33',
+                    cancelButtonColor: '#6c757d',
+                    confirmButtonText: 'Undo',
+                    cancelButtonText: 'OK'
+                }).then((result) => {
+                    if (result.isConfirmed) {
+                        // undo - restore product
+                        fetch('/admin/restore-product/' + id).then(() => {
+                            Swal.fire('Restored!', 'Product has been restored.', 'success').then(() => {
+                                location.reload()
+                            })
+                        })
+                    } else {
+                        // ok - reload page
+                        location.reload()
+                    }
+                })
+            })
+        }
+    })
+}
+</script>
