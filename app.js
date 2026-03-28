@@ -49,14 +49,16 @@ app.use(session({
     cookie: { maxAge: 24 * 60 * 60 * 1000 }
 }))
 
-db.connect((err) => {
-    if (err) {
-        console.log('DB Connection Failed')
-        process.exit(1)
-    } else {
-            console.log('Server running on port 27017')
-            }
-})
+const MongoStore = require('connect-mongo')
+
+app.use(session({
+  secret: process.env.SESSION_SECRET || 'yourSecret',
+  resave: false,
+  saveUninitialized: false,
+  store: MongoStore.create({
+    mongoUrl: process.env.MONGODB_URI
+  })
+}))
 
 app.use('/', userRouter);
 app.use('/admin', adminRouter);

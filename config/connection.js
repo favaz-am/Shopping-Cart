@@ -1,7 +1,7 @@
 const { MongoClient } = require('mongodb')
 
-const url = 'mongodb://localhost:27017'
-const dbname = 'shopping'
+const url = process.env.MONGODB_URI || 'mongodb://localhost:27017'
+const dbname = process.env.DB_NAME || 'shopping'
 
 let state = {
     db: null
@@ -23,6 +23,3 @@ module.exports.connect = function(done) {
 module.exports.get = function() {
     return state.db
 }
-
-
-
