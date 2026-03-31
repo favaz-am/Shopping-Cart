@@ -2,6 +2,7 @@ var express = require("express");
 var router = express.Router();
 var productHelper = require("../helpers/product-helpers");
 var userHelper = require("../helpers/user-helpers");
+const { log } = require("handlebars");
 
 /* GET home page. */
 router.get("/", async function (req, res, next) {
@@ -66,9 +67,11 @@ router.get('/cart', verifyLogin, async (req, res) => {
     })
     res.render('user/cart', { products, user: req.session.user, totalPrice ,cartCount})
 })
-router.get("/add-to-cart/:id", verifyLogin, (req, res) => {
+router.get("/add-to-cart/:id", (req, res) => {
+  console.log('Api called');
   userHelper.addToCart(req.params.id, req.session.user._id).then(() => {
-    res.redirect("/cart");
+    // res.redirect("/cart");
+    res.json({status:true})
   });
 });
 
