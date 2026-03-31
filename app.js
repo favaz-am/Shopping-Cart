@@ -48,14 +48,24 @@ app.use('/', userRouter);
 app.use('/admin', adminRouter);
 
 app.use(function(req, res, next) {
-  next(createError(404));
+    next(createError(404));
 });
 
 app.use(function(err, req, res, next) {
-  res.locals.message = err.message;
-  res.locals.error = req.app.get('env') === 'development' ? err : {};
-  res.status(err.status || 500);
-  res.render('error');
+    res.locals.message = err.message;
+    res.locals.error = req.app.get('env') === 'development' ? err : {};
+    res.status(err.status || 500);
+    res.render('error');
 });
+
+// ✅ add db.connect here
+db.connect((err) => {
+    if (err) {
+        console.log('DB Connection Failed')
+        process.exit(1)
+    } else {
+        console.log('DB Connected Successfully')
+    }
+})
 
 module.exports = app;
