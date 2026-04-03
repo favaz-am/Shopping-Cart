@@ -57,9 +57,9 @@ module.exports = {
           db.get()
           .collection(collections.CART_COLLECTIONS)
           .updateOne(
-            { 'product.item': new objectId(proId) },
-            { $inc: { 'products.quantity': 1 } },
-          )
+    { user: new objectId(userId), 'products.item': new objectId(proId) },
+    { $inc: { 'products.$.quantity': 1 } }
+)
           .then(() => {
             resolve();
           });
@@ -79,7 +79,7 @@ module.exports = {
       else {
         let cartObj = {
           user: new objectId(userId),
-          products: [new objectId(proId)],
+          products: [{ item: new objectId(proId), quantity: 1 }],
         };
         db.get()
           .collection(collections.CART_COLLECTIONS)
@@ -101,21 +101,22 @@ module.exports = {
             $match: { user: new objectId(userId) },
           },
           {
-            $lookup: {
-              from: collections.PRODUCT_COLLETIONS,
-              let: { prodList: "$products" },
-              pipeline: [
-                {
-                  $match: {
-                    $expr: {
-                      $in: ["$_id", "$$prodList"],
-                    },
-                  },
-                },
-              ],
-              as: "cartItems",
-            },
+            $unwind:'$products'
           },
+          {
+            $project:{
+              item:'$products.item',
+              quantity:'$products.quantity'
+            }
+          },
+          {
+            $lookup:{
+              from:collections.PRODUCT_COLLETIONS,
+              localField:'item',
+              foreignField:'_id',
+              as:'product'
+            }
+          }
         ])
         .toArray();
       resolve(cartItems);

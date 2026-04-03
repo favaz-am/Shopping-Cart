@@ -58,21 +58,27 @@ router.get("/logout", (req, res) => {
   res.redirect("/");
 });
 router.get('/cart', verifyLogin, async (req, res) => {
-    let products = await userHelper.getCartProducts(req.session.user._id)
-    let totalPrice = 0
-    products.forEach(item => {
-        item.cartItems.forEach(product => {
-            totalPrice += parseInt(product.productPrice)
+    try {
+        let user = req.session.user
+        let cartCount = await userHelper.getCartCount(user._id)
+        let products = await userHelper.getCartProducts(user._id)
+        console.log('products:', JSON.stringify(products))
+        let totalPrice = 0
+        products.forEach(item => {
+            if(item.product && item.product[0]){
+                totalPrice += parseInt(item.product[0].productPrice) * item.quantity  // ✅ item.product
+            }
         })
-    })
-    res.render('user/cart', { products, user: req.session.user, totalPrice ,cartCount})
+        res.render('user/cart', { products, user, totalPrice, cartCount })
+    } catch(err) {
+        console.log('Cart error:', err)
+        res.redirect('/')
+    }
 })
-router.get("/add-to-cart/:id", (req, res) => {
-  console.log('Api called');
-  userHelper.addToCart(req.params.id, req.session.user._id).then(() => {
-    // res.redirect("/cart");
-    res.json({status:true})
-  });
-});
+router.get("/add-to-cart/:id", verifyLogin, (req, res) => {
+    userHelper.addToCart(req.params.id, req.session.user._id).then(() => {
+        res.json({ status: true })
+    })
+})
 
 module.exports = router;

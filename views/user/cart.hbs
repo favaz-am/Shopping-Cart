@@ -7,24 +7,24 @@
       <div class="col-md-8">
         <div class="card shadow-sm border-0 rounded-4">
           <div class="card-body p-0">
-            {{#each products}}
-              {{#each this.cartItems}}
-              <div class="d-flex align-items-center p-3 border-bottom">
-                <img src="/product-images/{{this._id}}.jpg"
-                  alt="{{this.productName}}"
-                  style="width:90px; height:90px; object-fit:contain; border-radius:10px; background:#f8f9fa; padding:5px;">
-                <div class="ms-3 flex-grow-1">
-                  <h6 class="fw-bold mb-1">{{this.productName}}</h6>
-                  <span class="badge bg-secondary mb-1">{{this.productCategory}}</span>
-                  <p class="text-muted mb-0" style="font-size:0.85rem;">{{this.productDescription}}</p>
-                </div>
-                <div class="text-end ms-3">
-                  <h6 class="text-success fw-bold">₹{{this.productPrice}}</h6>
-                  <a href="/remove-from-cart/{{this._id}}" class="btn btn-sm btn-outline-danger mt-1">Remove</a>
-                </div>
-              </div>
-              {{/each}}
-            {{/each}}
+           {{#each products}}
+<div class="d-flex align-items-center p-3 border-bottom">
+    <img src="/product-images/{{this.item}}.jpg"
+        style="width:90px; height:90px; object-fit:contain; border-radius:10px; background:#f8f9fa; padding:5px;">
+    <div class="ms-3 flex-grow-1">
+        {{#each this.product}}
+        <h6 class="fw-bold mb-1">{{this.productName}}</h6>
+        <span class="badge bg-secondary mb-1">{{this.productCategory}}</span>
+        <p class="text-muted mb-0" style="font-size:0.85rem;">{{this.productDescription}}</p>
+        <h6 class="text-success fw-bold mt-1">₹{{this.productPrice}}</h6>
+        {{/each}}
+    </div>
+    <div class="text-end ms-3">
+        <p>Qty: {{this.quantity}}</p>
+        <a href="/remove-from-cart/{{this.item}}" class="btn btn-sm btn-outline-danger mt-1">Remove</a>
+    </div>
+</div>
+{{/each}}
           </div>
         </div>
       </div>

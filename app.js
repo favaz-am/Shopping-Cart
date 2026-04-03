@@ -21,6 +21,10 @@ app.engine('hbs', hbs.engine({
     defaultLayout: 'layout',
     layoutsDir: __dirname + '/views/layout/',
     partialsDir: __dirname + '/views/partials/',
+    runtimeOptions: {
+        allowProtoPropertiesByDefault: true,  
+        allowProtoMethodsByDefault: true      
+    },
     helpers: {
         increment: function(value) {
             return value + 1
