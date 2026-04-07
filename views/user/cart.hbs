@@ -43,12 +43,12 @@
                   <div
                     class="d-flex align-items-center border rounded overflow-hidden"
                   >
-                    <button
-                      class="btn btn-light btn-sm px-2 py-1 border-0"
-                      onclick="changeQuantity(-1,'{{this._id}}','{{this.item}}')"
+                   <button class="btn btn-light btn-sm px-2 py-1 border-0 minus-btn"
+                      onclick="changeQuantity(this,-1,'{{this._id}}','{{this.item}}')" 
+                      {{#if (eq this.quantity 1)}}disabled{{/if}}
                     >−</button>
                     <input
-                      type=""
+                      type="number"
                       min="1"
                       name="quantity"
                       value="{{this.quantity}}"
@@ -57,7 +57,7 @@
                     />
                     <button
                       class="btn btn-light btn-sm px-2 py-1 border-0"
-                     onclick="changeQuantity(1,'{{this._id}}','{{this.item}}')"
+                     onclick="changeQuantity(this,1,'{{this._id}}','{{this.item}}')"
                     >+</button>
                   </div>
                   <a
@@ -107,7 +107,12 @@
 </section>
 
 <script>
- function changeQuantity(count, cartId, proId) {
+ function changeQuantity(btn, count, cartId, proId) {
+    let input = $(btn).siblings('input')
+    let currentVal = parseInt(input.val())
+    let newVal = currentVal + count
+    if(newVal < 1) return
+
     $.ajax({
         url: '/change-quantity',
         method: 'post',
@@ -117,8 +122,26 @@
             count: count
         },
         success: (response) => {
-            console.log('quantity updated', response)
+            if(response.status) {
+                input.val(newVal)  // update quantity
+
+                // get minus button
+                let minusBtn = $(btn).closest('.d-flex').find('.minus-btn')
+
+                // disable if quantity is 1
+                if(newVal <= 1) {
+                    minusBtn.prop('disabled', true)
+                } else {
+                    minusBtn.prop('disabled', false)
+                }
+            }
         }
     })
 }
 </script>
+<style>
+    .minus-btn:disabled {
+        opacity: 0.4;
+        cursor: not-allowed;
+    }
+</style>  
