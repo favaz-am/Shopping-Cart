@@ -54,6 +54,7 @@
                       value="{{this.quantity}}"
                       class="form-control form-control-sm border-0 text-center p-0"
                       style="width:40px; box-shadow:none;"
+                      onclick="changeQuantity(this,1,'{{this._id}}','{{this.item}}')"
                     />
                     <button
                       class="btn btn-light btn-sm px-2 py-1 border-0"
@@ -64,6 +65,8 @@
                     href="/remove-from-cart/{{this.item}}"
                     class="btn btn-sm btn-outline-danger w-100"
                   >Remove</a>
+                  {{!-- <a href="#" onclick="confirmRemove(event,'{{this.item}}')" 
+                   class="btn btn-sm btn-outline-danger w-100">Remove</a> --}}
                 </div>
 
               </div>
@@ -138,6 +141,22 @@
         }
     })
 }
+{{!-- function confirmRemove(event, itemId) {
+    event.preventDefault()
+    Swal.fire({
+        title: 'Remove item?',
+        text: 'Are you sure you want to remove this item from cart?',
+        icon: 'warning',
+        showCancelButton: true,
+        confirmButtonColor: '#d33',
+        cancelButtonColor: '#6c757d',
+        confirmButtonText: 'Yes, remove it!'
+    }).then((result) => {
+        if (result.isConfirmed) {
+            window.location.href = '/remove-from-cart/' + itemId
+        }
+    })
+} --}}
 </script>
 <style>
     .minus-btn:disabled {

@@ -162,4 +162,17 @@ module.exports = {
             })
     });
   },
+  removeFromCart:(userId, productId) => {
+    return new Promise((resolve, reject) => {
+        db.get()
+            .collection(collections.CART_COLLECTIONS)
+            .updateOne(
+                { user: new objectId(userId) },
+                { $pull: { products: { item: new objectId(productId) } } }
+            )
+            .then((response) => {
+                resolve(response)
+            })
+    })
+}
 };

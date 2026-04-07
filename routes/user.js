@@ -91,5 +91,10 @@ router.post("/change-quantity", verifyLogin, async (req, res) => {
     res.json(response);
   });
 });
+router.get('/remove-from-cart/:id', verifyLogin, (req, res) => {
+    userHelper.removeFromCart(req.session.user._id, req.params.id).then(() => {
+        res.redirect('/cart')
+    })
+})
 
 module.exports = router;
