@@ -7,8 +7,9 @@
       <div class="col-md-8">
         <div class="card shadow-sm border-0 rounded-4">
           <div class="card-body p-0">
+            <input type="hidden" id="userId" value="{{user._id}}">
             {{#each products}}
-              <div class="d-flex align-items-center p-3 border-bottom gap-3">
+             <div class="d-flex align-items-center p-3 border-bottom gap-3" data-price="{{this.product.productPrice}}">
 
                 <!-- Image -->
                 <img
@@ -44,7 +45,7 @@
                     class="d-flex align-items-center border rounded overflow-hidden"
                   >
                    <button class="btn btn-light btn-sm px-2 py-1 border-0 minus-btn"
-                      onclick="changeQuantity(this,-1,'{{this._id}}','{{this.item}}')" 
+                      onclick="changeQuantity(this,-1,'{{user._id}}','{{this.item}}')" 
                       {{#if (eq this.quantity 1)}}disabled{{/if}}
                     >−</button>
                     <input
@@ -54,7 +55,7 @@
                       value="{{this.quantity}}"
                       class="form-control form-control-sm border-0 text-center p-0"
                       style="width:40px; box-shadow:none;"
-                      onclick="changeQuantity(this,1,'{{this._id}}','{{this.item}}')"
+                      onclick="changeQuantity(this,1,'{{user._id}}','{{this.item}}')"
                     />
                     <button
                       class="btn btn-light btn-sm px-2 py-1 border-0"
@@ -83,7 +84,7 @@
             <hr />
             <div class="d-flex justify-content-between mb-2">
               <span class="text-muted">Subtotal</span>
-              <span class="fw-semibold">₹{{totalPrice}}</span>
+              <span class="fw-semibold"  id="subtotal">₹{{totalPrice}}</span>
             </div>
             <div class="d-flex justify-content-between mb-2">
               <span class="text-muted">Delivery</span>
@@ -92,7 +93,7 @@
             <hr />
             <div class="d-flex justify-content-between mb-3">
               <span class="fw-bold">Total</span>
-              <span class="fw-bold text-success fs-5">₹{{totalPrice}}</span>
+              <span class="fw-bold text-success fs-5" id="total">₹{{totalPrice}}</span>
             </div>
             <div class="d-grid">
               <a href="/checkout" class="btn btn-primary btn-lg">Proceed to
@@ -111,6 +112,7 @@
 
 <script>
  function changeQuantity(btn, count, cartId, proId) {
+  let userId = $('#userId').val()
     let input = $(btn).siblings('input')
     let currentVal = parseInt(input.val())
     let newVal = currentVal + count
@@ -120,7 +122,7 @@
         url: '/change-quantity',
         method: 'post',
         data: { 
-            cart: cartId,
+            cart: userId,
             product: proId,
             count: count
         },
@@ -137,9 +139,22 @@
                 } else {
                     minusBtn.prop('disabled', false)
                 }
+                updateTotal()
             }
         }
     })
+}
+function updateTotal() {
+    let total = 0
+    // loop through each product row
+    $('.border-bottom').each(function() {
+        let price = parseInt($(this).data('price'))  // get price from data attribute
+        let quantity = parseInt($(this).find('input[name="quantity"]').val())  // get current quantity
+        total += price * quantity  // multiply price by quantity
+    })
+    // update subtotal and total
+    $('#subtotal').text('₹' + total)
+    $('#total').text('₹' + total)
 }
 {{!-- function confirmRemove(event, itemId) {
     event.preventDefault()

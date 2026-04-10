@@ -153,11 +153,11 @@ module.exports = {
       db.get()
         .collection(collections.CART_COLLECTIONS)
         .updateOne(
-          { _id: new objectId(details.cart), "products.item": new objectId(details.product) },
+          { user: new objectId(details.cart), "products.item": new objectId(details.product) },
           { $inc: { "products.$.quantity": details.count} },
         )
         .then((response) => {
-                console.log('update response:', response.modifiedCount)  // ✅ check if updated
+                console.log('update response:', response.modifiedCount) 
                 resolve({ status: true })
             })
     });
