@@ -96,5 +96,17 @@ router.get('/remove-from-cart/:id', verifyLogin, (req, res) => {
         res.redirect('/cart')
     })
 })
+router.get('/checkout', verifyLogin, async (req, res) => {
+    let user = req.session.user;
+    let cartCount = await userHelper.getCartCount(user._id);
+    let products = await userHelper.getCartProducts(user._id);
+    let totalPrice = 0;
+     products.forEach((item) => {
+      if (item.product) {
+        totalPrice += parseInt(item.product.productPrice) * item.quantity;
+      }
+    });
+    res.render("user/checkout", { products, user, totalPrice, cartCount });
+})
 
 module.exports = router;
