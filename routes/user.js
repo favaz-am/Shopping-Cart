@@ -67,13 +67,7 @@ router.get("/cart", verifyLogin, async (req, res) => {
     let user = req.session.user;
     let cartCount = await userHelper.getCartCount(user._id);
     let products = await userHelper.getCartProducts(user._id);
-
-    let totalPrice = 0;
-    products.forEach((item) => {
-      if (item.product) {
-        totalPrice += parseInt(item.product.productPrice) * item.quantity;
-      }
-    });
+    let totalPrice= await userHelper.orderSummary(user._id)
     res.render("user/cart", { products, user, totalPrice, cartCount });
   } catch (err) {
     console.log("Cart error:", err);
@@ -100,12 +94,7 @@ router.get('/checkout', verifyLogin, async (req, res) => {
     let user = req.session.user;
     let cartCount = await userHelper.getCartCount(user._id);
     let products = await userHelper.getCartProducts(user._id);
-    let totalPrice = 0;
-     products.forEach((item) => {
-      if (item.product) {
-        totalPrice += parseInt(item.product.productPrice) * item.quantity;
-      }
-    });
+    let totalPrice= await userHelper.orderSummary(user._id)
     res.render("user/checkout", { products, user, totalPrice, cartCount });
 })
 
