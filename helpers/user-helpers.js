@@ -216,9 +216,8 @@ orderSummary: (userId) => {
           }
         ])
         .toArray();
-        console.log(total);
         
-      resolve(total[0].total);
+      resolve(total.length > 0 ? total[0].total : 0);
     });
-  }
+  },
 };
