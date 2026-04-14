@@ -106,20 +106,16 @@ router.post("/checkout", verifyLogin, async (req, res) => {
 });
 router.get("/orders", verifyLogin, async (req, res) => {
   let user = req.session.user;
-
   let cartCount = await userHelper.getCartCount(user._id);
   let orders = await userHelper.getUserOrders(user._id);
-
-  // 🔥 Attach products to each order
   for (let i = 0; i < orders.length; i++) {
     orders[i].products = await userHelper.getOrderProducts(orders[i]._id);
   }
-
   res.render("user/orders", { user, cartCount, orders });
 });
-router.get("/view-order-products/:id", async (req, res) => {
+router.get("/view-details-product/:id", async (req, res) => {
   let products = await userHelper.getOrderProducts(req.params.id);
-  res.render("user/view-order-products", { user: req.session.user, products });
+  res.render("user/view-details-product", { user: req.session.user, products });
 });
 
 module.exports = router;
