@@ -1,0 +1,132 @@
+<div class="container py-5">
+     <h3 class="fw-bold mb-4">My Orders</h3>
+  <!-- MAIN CONTENT -->
+  {{#each orders}}
+  <div class="row g-4">
+
+    <!-- LEFT -->
+    
+    <div class="card shadow-sm mb-4">
+
+  <!-- HEADER -->
+  <div class="card-header  bg-white">
+    <div class="row text-muted small">
+
+      <div class="col-md-3">
+        <div>ORDER PLACED</div>
+        <strong class="text-dark">{{this.date}}</strong>
+      </div>
+
+      <div class="col-md-2">
+        <div>TOTAL</div>
+        <strong class="text-dark">{{this.totalAmount}}</strong>
+      </div>
+
+      <div class="col-md-3">
+        <div>SHIP TO</div>
+        <strong class="text-dark">{{this.deliveryDetails.firstName}} {{this.deliveryDetails.lastName}}</strong>
+      </div>
+
+      <div class="col-md-4 text-md-end">
+        <div>ORDER # 171-3234348-6471563</div>
+        <a href="#" class="me-3 text-decoration-none">View order details</a>
+        <a href="#" class="text-decoration-none">Invoice</a>
+      </div>
+
+    </div>
+  </div>
+
+  <!-- BODY -->
+  <div class="card-body">
+
+    <div class="row align-items-center">
+
+      <!-- LEFT: PRODUCT INFO -->
+      <div class="col-md-8">
+        <div class="d-flex gap-3">
+
+          <img src="../assets/images/ecommerce/product-1.jpg"
+               width="100" class="rounded">
+
+          <div>
+            <h6 class="mb-1 fw-bold">{{this.products}}</h6>
+             <p class="mb-2">
+              ₹{{this.price}}
+            </p>
+            <p class="text-muted mb-2">QTY :{{this.quantity}}</p>   
+          </div>
+
+        </div>
+            <!-- SHIPPING ADDRESS -->
+<div class="card shadow-sm mb-4">
+  <div class="card-header">
+    <h6 class="mb-0">Shipping Address</h6>
+  </div>
+
+  <div class="card-body">
+
+    <p class="mb-1 fw-bold">{{this.deliveryDetails.firstName}} {{this.deliveryDetails.lastName}}</p>
+
+    <p class="mb-1 text-muted">
+      {{this.ShippingInformation.address}},<br>
+      {{this.ShippingInformation.locality}},<br>
+      {{this.ShippingInformation.landmark}}, {{this.ShippingInformation.postalcode}}
+    </p>
+
+    <p class="mb-1">
+      <strong>Phone:</strong>{{this.deliveryDetails.mobile}}
+    </p>
+
+    <p class="mb-0">
+      <strong>Email:</strong> {{this.deliveryDetails.email}}
+    </p>
+
+  </div>
+</div>
+      </div>
+
+      <!-- RIGHT: BUTTONS -->
+      <div class="col-md-4 text-md-end mt-3 mt-md-0">
+
+        <div class="d-grid gap-2">
+
+          <a href="/view-order-products/{{this._id}}" class="btn btn-primary rounded-pill fw-semibold">
+            View products
+          </a>
+
+          <button class="btn btn-outline-secondary rounded-pill">
+            Track package
+          </button>
+        </div>
+             <div class="card shadow-sm">
+        <div class="card-header">
+          <h6 class="mb-0">Payment</h6>
+        </div>
+
+        <div class="card-body">
+          <p class="mb-1"><strong>Method:</strong> Credit Card</p>
+          <p class="mb-1"><strong>Card:</strong> **** 6779</p>
+          <p class="mb-0"><strong>Name:</strong> Harold</p>
+        </div>
+      </div>
+
+      </div>
+
+    </div>
+
+  </div>
+
+</div>
+
+
+    <!-- RIGHT -->
+    <div class="col-lg-4">
+      <!-- PAYMENT -->
+ 
+
+    </div>
+
+  </div>
+  {{/each}}
+
+</div>

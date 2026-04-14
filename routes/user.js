@@ -104,5 +104,20 @@ router.post('/checkout', verifyLogin, async (req, res) => {
         res.json({ status: true })
     })
 })
+router.get('/orders', verifyLogin, async (req, res) => {
+  let user = req.session.user;
+    let cartCount = await userHelper.getCartCount(user._id);
+    let orders = await userHelper.getUserOrders(user._id);
+
+    res.render("user/orders",{ user,cartCount , orders});
+})
+router.get('/view-order-products/:id',async (req, res) => {
+  let user = req.session.user;
+    let products = await userHelper.getOrderProducts(req.params.id);
+
+    res.render("user/view-order-products",{ user,products});
+})
+
+
 
 module.exports = router;
