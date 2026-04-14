@@ -1,169 +1,171 @@
-
-<section class="bg-light py-5">
+<section class="bg-light min-vh-100 py-5">
   <div class="container">
-    <div class="row">
-      <div class="col-xl-8 col-lg-8 mb-4">
-       
-<form action="/users/checkout"  method="GET">
-        <!-- Checkout -->
-        <div class="card shadow-0 border">
-          <div class="p-4">
-            <h5 class="card-title mb-3">Secure checkout</h5>
-            <div class="row">
-              <div class="col-6 mb-3">
-                <p class="mb-0">First name</p>
-                <div class="form-outline">
-                  <input type="text" id="typeText" placeholder="Type here" class="form-control" />
-                </div>
-              </div>
+    <h3 class="fw-bold mb-4">Checkout</h3>
+    <form action="/checkout" method="POST" id="checkout-form">
+      <input type="hidden" name="userId" value="{{user._id}}">
+      <div class="row g-4">
 
-              <div class="col-6">
-                <p class="mb-0">Last name</p>
-                <div class="form-outline">
-                  <input type="text" id="typeText" placeholder="Type here" class="form-control" />
-                </div>
-              </div>
+        <!-- Left Section -->
+        <div class="col-lg-8">
 
-              <div class="col-6 mb-3">
-                <p class="mb-0">Phone</p>
-                <div class="form-outline">
-                  <input type="tel" id="typePhone" value="+91" class="form-control" />
+          <!-- Contact Info -->
+          <div class="card shadow-sm border-0 rounded-4 mb-4">
+            <div class="card-body p-4">
+              <h5 class="fw-bold mb-3">Contact Information</h5>
+              <div class="row g-3">
+                <div class="col-md-6">
+                  <label class="form-label fw-semibold">First Name</label>
+                  <input type="text" name="firstName" class="form-control" placeholder="Enter first name" required>
                 </div>
-              </div>
-
-              <div class="col-6 mb-3">
-                <p class="mb-0">Email</p>
-                <div class="form-outline">
-                  <input type="email" id="typeEmail" placeholder="example@gmail.com" class="form-control" />
+                <div class="col-md-6">
+                  <label class="form-label fw-semibold">Last Name</label>
+                  <input type="text" name="lastName" class="form-control" placeholder="Enter last name" required>
+                </div>
+                <div class="col-md-6">
+                  <label class="form-label fw-semibold">Phone</label>
+                  <div class="input-group">
+                    <span class="input-group-text">+91</span>
+                    <input type="tel" name="mobile" class="form-control" placeholder="Enter phone number" required>
+                  </div>
+                </div>
+                <div class="col-md-6">
+                  <label class="form-label fw-semibold">Email</label>
+                  <input type="email" name="email" class="form-control" placeholder="example@gmail.com" value="{{user.email}}" required>
                 </div>
               </div>
             </div>
+          </div>
 
-            <hr class="my-4" />
-
-            <h5 class="card-title mb-3">Shipping info</h5>
-            <div class="row">
-              <div class="col-sm-8 mb-3">
-                <p class="mb-0">Address</p>
-                <div class="form-outline">
-                  <input type="text" id="typeText" placeholder="Type here" class="form-control" />
+          <!-- Shipping Info -->
+          <div class="card shadow-sm border-0 rounded-4 mb-4">
+            <div class="card-body p-4">
+              <h5 class="fw-bold mb-3">Shipping Information</h5>
+              <div class="row g-3">
+                <div class="col-12">
+                  <label class="form-label fw-semibold">Address</label>
+                  <input type="text" name="address" class="form-control" placeholder="House no., Building, Street" required>
                 </div>
-              </div>
-
-              <div class="col-sm-4 mb-3 ">
-                <p class="mb-0">Area, Street, Sector, Village</p>
-                <div class="form-outline">
-                  <input type="text" id="typeText" placeholder="Type here" class="form-control" />
+                <div class="col-md-6">
+                  <label class="form-label fw-semibold">Area / Locality</label>
+                  <input type="text" name="area" class="form-control" placeholder="Area, Street, Sector" required>
                 </div>
-              </div>
-
-              <div class="col-sm-4 mb-3">
-                <p class="mb-0">Flat, House no., Building, Company, Apartment</p>
-                <div class="form-outline">
-                  <input type="text" id="typeText" placeholder="Type here" class="form-control" />
+                <div class="col-md-6">
+                  <label class="form-label fw-semibold">Landmark</label>
+                  <input type="text" name="landmark" class="form-control" placeholder="Near..." >
                 </div>
-              </div>
-
-              <div class="col-sm-4 col-6 mb-3">
-                <p class="mb-0">Pincode</p>
-                <div class="form-outline">
-                  <input type="text" id="typeText" class="form-control" />
+                <div class="col-md-6">
+                  <label class="form-label fw-semibold">Pincode</label>
+                  <input type="text" name="pincode" class="form-control" placeholder="Enter pincode" required>
                 </div>
-              </div>
-
-              <div class="col-sm-4 col-6 mb-3">
-                <p class="mb-0">Landmark</p>
-                <div class="form-outline">
-                  <input type="text" id="typeText" class="form-control" />
+                <div class="col-md-6">
+                  <label class="form-label fw-semibold">City</label>
+                  <input type="text" name="city" class="form-control" placeholder="Enter city" required>
+                </div>
+                <div class="col-12">
+                  <label class="form-label fw-semibold">Delivery Instructions</label>
+                  <textarea name="instructions" class="form-control" rows="2" placeholder="Optional delivery notes"></textarea>
                 </div>
               </div>
             </div>
+          </div>
 
-            <div class="form-check mb-3">
-              <input class="form-check-input" type="checkbox" value="" id="flexCheckDefault1" />
-              <label class="form-check-label" for="flexCheckDefault1">Save this address</label>
-            </div>
+          <!-- Payment -->
+          <div class="card shadow-sm border-0 rounded-4 mb-4">
+            <div class="card-body p-4">
+              <h5 class="fw-bold mb-3">Payment Method</h5>
+              <div class="d-flex flex-column gap-3">
 
-            <div class="mb-3">
-              <p class="mb-0">Delivery instructions</p>
-              <div class="form-outline">
-                <textarea class="form-control" id="textAreaExample1" rows="2"></textarea>
-              </div>
-            </div>
-            <hr class="mb-4">
-            <h4 class="mb-3">Payment</h4>
-            <div class="d-block my-3">
-              <div class="custom-control custom-radio">
-                <input id="credit" name="paymentMethod" type="radio" class="custom-control-input" checked="" required="">
-                <label class="custom-control-label" for="credit">Cash on delivery</label>
-              </div>
-              <div class="custom-control custom-radio">
-                <input id="debit" name="paymentMethod" type="radio" class="custom-control-input" required="">
-                <label class="custom-control-label" for="debit">Online payment</label>
-              </div>
-              <div class="custom-control custom-radio">
-                <input id="paypal" name="paymentMethod" type="radio" class="custom-control-input" required="">
-                <label class="custom-control-label" for="paypal">EMI</label>
-              </div>
-            </div>
+                <label class="d-flex align-items-center gap-3 border rounded-3 p-3 cursor-pointer" style="cursor:pointer;">
+                  <input type="radio" name="paymentMethod" value="cod" checked required>
+                  <div>
+                    <p class="mb-0 fw-semibold">Cash on Delivery</p>
+                    <small class="text-muted">Pay when your order arrives</small>
+                  </div>
+                </label>
 
-            <div class="float-end">
-              <button class="btn btn-light border">Cancel</button>
-              <button class="btn btn-success shadow-0 border">Continue</button>
+                <label class="d-flex align-items-center gap-3 border rounded-3 p-3" style="cursor:pointer;">
+                  <input type="radio" name="paymentMethod" value="online" required>
+                  <div>
+                    <p class="mb-0 fw-semibold">Online Payment</p>
+                    <small class="text-muted">UPI, Credit/Debit Card, Net Banking</small>
+                  </div>
+                </label>
+
+                <label class="d-flex align-items-center gap-3 border rounded-3 p-3" style="cursor:pointer;">
+                  <input type="radio" name="paymentMethod" value="emi" required>
+                  <div>
+                    <p class="mb-0 fw-semibold">EMI</p>
+                    <small class="text-muted">Easy monthly installments</small>
+                  </div>
+                </label>
+
+              </div>
+            </div>
+          </div>
+
+          <!-- Buttons -->
+          <div class="d-flex justify-content-between">
+            <a href="/cart" class="btn btn-outline-secondary px-4">← Back to Cart</a>
+            <button type="submit" class="btn btn-success px-5">Place Order</button>
+          </div>
+
+        </div>
+
+        <!-- Right Section - Order Summary -->
+        <div class="col-lg-4">
+          <div class="card shadow-sm border-0 rounded-4 sticky-top" style="top:20px;">
+            <div class="card-body p-4">
+              <h5 class="fw-bold mb-3">Order Summary</h5>
+              <hr>
+
+              <!-- Cart Items -->
+              {{#each products}}
+              <div class="d-flex align-items-center mb-3 gap-3">
+                <img src="/product-images/{{this.item}}.jpg"
+                  style="width:60px; height:60px; object-fit:contain; border-radius:8px; background:#f8f9fa; padding:4px;">
+                <div class="flex-grow-1">
+                  <p class="mb-0 fw-semibold" style="font-size:0.9rem;">{{this.product.productName}}</p>
+                  <small class="text-muted">Qty: {{this.quantity}}</small>
+                </div>
+                <span class="fw-semibold text-success" style="font-size:0.9rem;">₹{{this.product.productPrice}}</span>
+              </div>
+              {{/each}}
+
+              <hr>
+              <div class="d-flex justify-content-between mb-2">
+                <span class="text-muted">Subtotal</span>
+                <span class="fw-semibold">₹{{totalPrice}}</span>
+              </div>
+              <div class="d-flex justify-content-between mb-2">
+                <span class="text-muted">Delivery</span>
+                <span class="text-success fw-semibold">Free</span>
+              </div>
+              <hr>
+              <div class="d-flex justify-content-between">
+                <span class="fw-bold fs-5">Total</span>
+                <span class="fw-bold text-success fs-5">₹{{totalPrice}}</span>
+              </div>
             </div>
           </div>
         </div>
-        <!-- Checkout -->
-        </form>
+
       </div>
-      <div class="col-xl-4 col-lg-4 d-flex justify-content-center justify-content-lg-end">
-        <div class="ms-lg-4 mt-4 mt-lg-0" style="max-width: 320px;">
-          <h6 class="mb-3">Summary</h6>
-          <div class="d-flex justify-content-between">
-            <p class="mb-2">Total price:</p>
-            <p class="mb-2">₹{{totalPrice}}</p>
-          </div>
-          <div class="d-flex justify-content-between">
-            <p class="mb-2">Discount:</p>
-            <p class="mb-2 text-danger">-₹</p>
-          </div>
-          <div class="d-flex justify-content-between">
-            <p class="mb-2">Shipping cost:</p>
-            <p class="mb-2"><span class="text-success fw-semibold">Free</span></p>
-          </div>
-          <hr />
-          <div class="d-flex justify-content-between">
-            <p class="mb-2">Total price:</p>
-            <p class="mb-2 fw-bold">₹{{totalPrice}}</p>
-          </div>
-
-          <div class="input-group mt-3 mb-4">
-            <input type="text" class="form-control border" name="" placeholder="Promo code" />
-            <button class="btn btn-light text-primary border">Apply</button>
-          </div>
-
-          <hr />
-          <h6 class="text-dark my-4">Items in cart</h6>
-           {{#each products}}
-
-          <div class="d-flex align-items-center mb-4">
-            <div class="me-3 position-relative">
-              <span class="position-absolute top-0 start-100 translate-middle badge rounded-pill badge-secondary">
-                1
-              </span>
-              <img  src="/product-images/{{this.item}}.jpg" style="height: 96px; width: 96x;" class="img-sm rounded border" />
-            </div>
-            <div class="">
-              <a href="#" class="nav-link">
-                {{this.product.productName}} <br />
-                Qty:{{this.quantity}}
-              </a>
-              <div class="price text-muted">Total: ₹{{this.product.productPrice}}</div>
-            </div>
-          </div>
-           {{/each}}
-        </div>
-      </div>
-    </div>
+    </form>
   </div>
 </section>
+
+<script>
+  $("#checkout-form").submit((click) => {
+    click.preventDefault()
+    $.ajax({
+      url: '/checkout',
+      method: 'post',
+      data: $('#checkout-form').serialize(),
+      success: (response) => {
+        if(response.status) {
+        location.href='/'
+        }
+      }
+    })
+  })
+</script>

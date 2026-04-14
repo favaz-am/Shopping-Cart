@@ -220,4 +220,48 @@ orderSummary: (userId) => {
       resolve(total.length > 0 ? total[0].total : 0);
     });
   },
+  placeOrder:(order,products,total)=>{
+    return new Promise(async(resolve,reject)=>{
+       console.log('paymentMethod:', order.paymentMethod)
+      let status = String(order.paymentMethod) === 'cod' ? 'placed' : 'pending'
+      console.log('status:', status)
+      let orderObj={
+        deliveryDetails:{
+            firstName:order.firstName,
+            lastName:order.lastName,
+            mobile:order.mobile,
+            email:order.email,
+            pincode:order.pincode
+        },
+        ShippingInformation:{
+          address:order.address,
+          locality:order.area,
+          landmark:order.landmark,
+          postalcode:order.pincode,
+          city:order.city
+        },
+        userId: new objectId(order.userId),
+        PaymentMethod:order['paymentMethode'],
+        products:products,
+        totalAmount:total, 
+        status:status
+      }
+      db.get().collection(collections.ORDER_COLLECTIONS).insertOne(orderObj).then((response)=>{
+        db.get().collection(collections.CART_COLLECTIONS).deleteOne({user:new objectId(order.userId)})
+        resolve()
+      })
+      
+      
+    })
+  },
+  getCartProductList: (userId) => {
+    return new Promise(async (resolve, reject) => {
+        let cart = await db.get().collection(collections.CART_COLLECTIONS).findOne({ user: new objectId(userId) })
+        if(cart) {
+            resolve(cart.products)
+        } else {
+            resolve([])
+        }
+    })
+}
 };

@@ -97,5 +97,12 @@ router.get('/checkout', verifyLogin, async (req, res) => {
     let totalPrice= await userHelper.orderSummary(user._id)
     res.render("user/checkout", { products, user, totalPrice, cartCount });
 })
+router.post('/checkout', verifyLogin, async (req, res) => {
+    let products = await userHelper.getCartProductList(req.body.userId)
+    let totalPrice = await userHelper.orderSummary(req.body.userId)
+    userHelper.placeOrder(req.body, products, totalPrice).then(() => {
+        res.json({ status: true })
+    })
+})
 
 module.exports = router;
