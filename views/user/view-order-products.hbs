@@ -1,0 +1,121 @@
+<div class="container py-5">
+  <div class="row g-5">
+
+    <!-- LEFT: IMAGES -->
+    <div class="col-md-6">
+
+      <!-- MAIN IMAGE -->
+      <img 
+        src="https://images.unsplash.com/photo-1505740420928-5e560c06d30e"
+        class="img-fluid rounded mb-3 w-100"
+        style="max-height:400px; object-fit:cover;"
+        id="mainImage"
+      >
+
+      <!-- THUMBNAILS -->
+      <div class="d-flex gap-2 justify-content-between">
+
+        <img src="https://images.unsplash.com/photo-1505740420928-5e560c06d30e"
+             class="img-fluid rounded border border-2 border-primary"
+             style="width:80px; height:80px; object-fit:cover; cursor:pointer;"
+             onclick="changeImage(event, this.src)">
+
+        <img src="https://images.unsplash.com/photo-1528148343865-51218c4a13e6"
+             class="img-fluid rounded border"
+             style="width:80px; height:80px; object-fit:cover; cursor:pointer;"
+             onclick="changeImage(event, this.src)">
+
+        <img src="https://images.unsplash.com/photo-1505740420928-5e560c06d30e"
+             class="img-fluid rounded border"
+             style="width:80px; height:80px; object-fit:cover; cursor:pointer;"
+             onclick="changeImage(event, this.src)">
+
+        <img src="https://images.unsplash.com/photo-1528148343865-51218c4a13e6"
+             class="img-fluid rounded border"
+             style="width:80px; height:80px; object-fit:cover; cursor:pointer;"
+             onclick="changeImage(event, this.src)">
+
+      </div>
+    </div>
+{{#each products}}
+    <!-- RIGHT: DETAILS -->
+    <div class="col-md-6">
+
+      <h2 class="mb-2">{{this.product.productName}}</h2>
+      <p class="text-muted mb-3">SKU: WH1000XM4</p>
+
+      <!-- PRICE -->
+      <div class="mb-3">
+        <span class="h4 me-2">₹{{this.product.productPrice}}</span>
+        <span class="text-muted text-decoration-line-through">₹{{this.product.productPrice}}</span>
+      </div>
+
+      <!-- RATING -->
+      <div class="mb-3">
+        <span class="text-warning">★★★★★☆</span>
+        <span class="ms-2 text-muted">4.5 (120 reviews)</span>
+      </div>
+
+      <!-- DESCRIPTION -->
+      <p class="mb-4">
+    {{this.product.productDescription}}
+      </p>
+
+      <!-- COLORS -->
+      <div class="mb-4">
+        <h6>Color:</h6>
+        <div class="btn-group">
+          <input type="radio" class="btn-check" name="color" id="black" checked>
+          <label class="btn btn-outline-dark" for="black">Black</label>
+
+          <input type="radio" class="btn-check" name="color" id="silver">
+          <label class="btn btn-outline-secondary" for="silver">Silver</label>
+
+          <input type="radio" class="btn-check" name="color" id="blue">
+          <label class="btn btn-outline-primary" for="blue">Blue</label>
+        </div>
+      </div>
+
+      <!-- QUANTITY -->
+      <div class="mb-4">
+        <label class="form-label">Quantity:</label>
+        <input type="{{this.quantity}}" class="form-control w-auto" value="1" min="1">
+      </div>
+
+      <!-- BUTTONS -->
+      <div class="d-flex gap-2 flex-wrap mb-4">
+        <button class="btn btn-primary btn-lg">
+        <i class="bi bi-cart3 fs-5"></i> Add to Cart
+        </button>
+
+        <button class="btn btn-outline-secondary btn-lg">
+          ❤️ Wishlist
+        </button>
+      </div>
+
+      <!-- FEATURES -->
+      <div>
+        <h6>Key Features:</h6>
+        <ul class="mb-0">
+          <li>Industry-leading noise cancellation</li>
+          <li>30-hour battery life</li>
+          <li>Touch sensor controls</li>
+          <li>Speak-to-chat technology</li>
+        </ul>
+      </div>
+
+    </div>
+    {{/each}}
+  </div>
+</div>
+<script>
+function changeImage(event, src) {
+    document.getElementById('mainImage').src = src;
+
+    document.querySelectorAll('.thumbnail-img').forEach(img => {
+        img.classList.remove('border-primary', 'border-2');
+    });
+
+    event.target.classList.add('border-primary', 'border-2');
+}
+</script>

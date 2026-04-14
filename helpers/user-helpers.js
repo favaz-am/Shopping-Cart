@@ -288,4 +288,44 @@ module.exports = {
       resolve(orders);
     });
   },
+  getOrderProducts: (orderId) => {
+    return new Promise(async (resolve, reject) => {
+      let orderItems = await db
+        .get()
+        .collection(collections.ORDER_COLLECTIONS)
+        .aggregate([
+          {
+            $match: { _id: new objectId(orderId) },
+          },
+          {
+            $unwind: "$products",
+          },
+          {
+            $project: {
+              item: "$products.item",
+              quantity: "$products.quantity",
+            },
+          },
+          {
+            $lookup: {
+              from: collections.PRODUCT_COLLETIONS,
+              localField: "item",
+              foreignField: "_id",
+              as: "product",
+            },
+          },
+          {
+            $project: {
+              item: 1,
+              quantity: 1,
+              product: { $arrayElemAt: ["$product", 0] },
+            },
+          },
+        ])
+        .toArray();
+        console.log(orderItems);
+        
+      resolve(orderItems);
+    });
+  } 
 };

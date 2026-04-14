@@ -67,7 +67,7 @@ router.get("/cart", verifyLogin, async (req, res) => {
     let user = req.session.user;
     let cartCount = await userHelper.getCartCount(user._id);
     let products = await userHelper.getCartProducts(user._id);
-    let totalPrice= await userHelper.orderSummary(user._id)
+    let totalPrice = await userHelper.orderSummary(user._id);
     res.render("user/cart", { products, user, totalPrice, cartCount });
   } catch (err) {
     console.log("Cart error:", err);
@@ -80,44 +80,46 @@ router.get("/add-to-cart/:id", verifyLogin, (req, res) => {
   });
 });
 router.post("/change-quantity", verifyLogin, async (req, res) => {
-   console.log('change quantity data:', req.body)
+  console.log("change quantity data:", req.body);
   userHelper.changeQuantity(req.body).then((response) => {
     res.json(response);
   });
 });
-router.get('/remove-from-cart/:id', verifyLogin, (req, res) => {
-    userHelper.removeFromCart(req.session.user._id, req.params.id).then(() => {
-        res.redirect('/cart')
-    })
-})
-router.get('/checkout', verifyLogin, async (req, res) => {
-    let user = req.session.user;
-    let cartCount = await userHelper.getCartCount(user._id);
-    let products = await userHelper.getCartProducts(user._id);
-    let totalPrice= await userHelper.orderSummary(user._id)
-    res.render("user/checkout", { products, user, totalPrice, cartCount });
-})
-router.post('/checkout', verifyLogin, async (req, res) => {
-    let products = await userHelper.getCartProductList(req.body.userId)
-    let totalPrice = await userHelper.orderSummary(req.body.userId)
-    userHelper.placeOrder(req.body, products, totalPrice).then(() => {
-        res.json({ status: true })
-    })
-})
-router.get('/orders', verifyLogin, async (req, res) => {
+router.get("/remove-from-cart/:id", verifyLogin, (req, res) => {
+  userHelper.removeFromCart(req.session.user._id, req.params.id).then(() => {
+    res.redirect("/cart");
+  });
+});
+router.get("/checkout", verifyLogin, async (req, res) => {
   let user = req.session.user;
-    let cartCount = await userHelper.getCartCount(user._id);
-    let orders = await userHelper.getUserOrders(user._id);
-
-    res.render("user/orders",{ user,cartCount , orders});
-})
-router.get('/view-order-products/:id',async (req, res) => {
+  let cartCount = await userHelper.getCartCount(user._id);
+  let products = await userHelper.getCartProducts(user._id);
+  let totalPrice = await userHelper.orderSummary(user._id);
+  res.render("user/checkout", { products, user, totalPrice, cartCount });
+});
+router.post("/checkout", verifyLogin, async (req, res) => {
+  let products = await userHelper.getCartProductList(req.body.userId);
+  let totalPrice = await userHelper.orderSummary(req.body.userId);
+  userHelper.placeOrder(req.body, products, totalPrice).then(() => {
+    res.json({ status: true });
+  });
+});
+router.get("/orders", verifyLogin, async (req, res) => {
   let user = req.session.user;
-    let products = await userHelper.getOrderProducts(req.params.id);
 
-    res.render("user/view-order-products",{ user,products});
-})
+  let cartCount = await userHelper.getCartCount(user._id);
+  let orders = await userHelper.getUserOrders(user._id);
 
+  // 🔥 Attach products to each order
+  for (let i = 0; i < orders.length; i++) {
+    orders[i].products = await userHelper.getOrderProducts(orders[i]._id);
+  }
 
+  res.render("user/orders", { user, cartCount, orders });
+});
+router.get("/view-order-products/:id", async (req, res) => {
+  let products = await userHelper.getOrderProducts(req.params.id);
+  res.render("user/view-order-products", { user: req.session.user, products });
+});
 
 module.exports = router;
