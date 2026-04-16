@@ -117,5 +117,8 @@ router.get("/view-details-product/:id", async (req, res) => {
   let products = await userHelper.getOrderProducts(req.params.id);
   res.render("user/view-details-product", { user: req.session.user, products });
 });
+router.get('/order-success', verifyLogin, (req, res) => {
+    res.render('user/order-success', { user: req.session.user })
+})
 
 module.exports = router;

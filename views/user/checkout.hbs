@@ -155,17 +155,19 @@
 </section>
 
 <script>
-  $("#checkout-form").submit((click) => {
-    click.preventDefault()
-    $.ajax({
-      url: '/checkout',
-      method: 'post',
-      data: $('#checkout-form').serialize(),
-      success: (response) => {
-        if(response.status) {
-        location.href='/'
+  $(document).ready(function() {
+    $("#checkout-form").submit(function(e) {
+      e.preventDefault()
+      $.ajax({
+        url: '/checkout',
+        method: 'post',
+        data: $('#checkout-form').serialize(),
+        success: function(response) {
+          if(response.status) {
+            window.location.href = '/order-success'  // ✅ go to success page
+          }
         }
-      }
+      })
     })
   })
 </script>
