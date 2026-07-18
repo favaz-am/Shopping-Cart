@@ -382,5 +382,14 @@ getAllUsers: () => {
             .toArray()
         resolve(users)
     })
+},
+getUserOrders: (userId) => {
+    return new Promise(async (resolve, reject) => {
+        let orders = await db.get()
+            .collection(collections.ORDER_COLLECTIONS)
+            .find({ userId: new objectId(userId) })
+            .toArray()
+        resolve(orders)
+    })
 }
 };
