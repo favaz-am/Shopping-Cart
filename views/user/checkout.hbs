@@ -157,17 +157,55 @@
 <script>
   $(document).ready(function() {
     $("#checkout-form").submit(function(e) {
-      e.preventDefault()
-      $.ajax({
-        url: '/checkout',
-        method: 'post',
-        data: $('#checkout-form').serialize(),
-        success: function(response) {
-          if(response.status) {
-            window.location.href = '/order-success'  // ✅ go to success page
-          }
-        }
-      })
+        e.preventDefault()
+        $.ajax({
+            url: '/checkout',
+            method: 'post',
+            data: $('#checkout-form').serialize(),
+            success: function(response) {
+                if(response.codSuccess) {
+                    window.location.href = '/order-success'
+                }
+                if(response.razorpay) {
+                    // open razorpay payment page
+                    let options = {
+                        key: 'rzp_test_SdRMiy1krFG8M3',
+                        amount: response.razorpayOrder.amount,
+                        currency: 'INR',
+                        name: 'Shopping Cart',
+                        description: 'Order Payment',
+                        order_id: response.razorpayOrder.id,
+                        handler: function(payment) {
+                            // payment success - verify
+                            $.ajax({
+                                url: '/verify-payment',
+                                method: 'post',
+                                data: {
+                                    payment: payment,
+                                    order: response.razorpayOrder
+                                },
+                                success: function(verifyResponse) {
+                                    if(verifyResponse.status) {
+                                        window.location.href = '/order-success'
+                                    } else {
+                                        alert('Payment verification failed')
+                                    }
+                                }
+                            })
+                        },
+                        prefill: {
+                            name: '{{user.name}}',
+                            email: '{{user.email}}'
+                        },
+                        theme: {
+                            color: '#0d6efd'
+                        }
+                    }
+                    let rzp = new Razorpay(options)
+                    rzp.open()
+                }
+            }
+        })
     })
-  })
+})
 </script>
