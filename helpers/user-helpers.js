@@ -391,5 +391,32 @@ getUserOrders: (userId) => {
             .toArray()
         resolve(orders)
     })
+},
+getAllOrders: () => {
+    return new Promise(async (resolve, reject) => {
+        let orders = await db.get()
+            .collection(collections.ORDER_COLLECTIONS)
+            .aggregate([
+                {
+                    $lookup: {
+                        from: collections.USER_COLLECTIONS,
+                        localField: 'userId',
+                        foreignField: '_id',
+                        as: 'user'
+                    }
+                },
+                {
+                    $project: {
+                        totalAmount: 1,
+                        paymentMethod: 1,
+                        status: 1,
+                        date: 1,
+                        user: { $arrayElemAt: ['$user', 0] }
+                    }
+                }
+            ])
+            .toArray()
+        resolve(orders)
+    })
 }
 };
