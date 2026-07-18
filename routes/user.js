@@ -130,5 +130,13 @@ router.get("/view-details-product/:id", async (req, res) => {
 router.get('/order-success', verifyLogin, (req, res) => {
     res.render('user/order-success', { user: req.session.user })
 })
-
+router.post('/verify-payment', verifyLogin, (req, res) => {
+    userHelper.verifyPayment(req.body).then(() => {
+        userHelper.updatePayment(req.body['order[receipt]']).then(() => {
+            res.json({ status: true })
+        })
+    }).catch(() => {
+        res.json({ status: false })
+    })
+})
 module.exports = router;
