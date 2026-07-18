@@ -61,5 +61,9 @@ router.get('/orders', async (req, res) => {
     let orders = await userHelper.getAllOrders()
     res.render('admin/orders', { admin: true, orders })
 })
+router.get('/view-order-products/:id', async (req, res) => {
+    let products = await userHelper.getOrderProducts(req.params.id)
+    res.render('admin/view-order-products', { admin: true, products })
+})
 
 module.exports = router;
