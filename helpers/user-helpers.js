@@ -267,7 +267,7 @@ module.exports = {
           db.get()
             .collection(collections.CART_COLLECTIONS)
             .deleteOne({ user: new objectId(order.userId) });
-          resolve();
+          resolve(response.insertedId);
         });
     });
   },
@@ -348,6 +348,30 @@ module.exports = {
                 resolve(order)
             }
         })
+    })
+},
+verifyPayment: (details) => {
+    return new Promise((resolve, reject) => {
+        const crypto = require('crypto')
+        let hmac = crypto.createHmac('sha256', 'kyBBIUIObx1dLaurCOMLOL4b')
+        hmac.update(details['payment[razorpay_order_id]'] + '|' + details['payment[razorpay_payment_id]'])
+        let generated = hmac.digest('hex')
+        if (generated === details['payment[razorpay_signature]']) {
+            resolve()
+        } else {
+            reject()
+        }
+    })
+},
+
+updatePayment: (orderId) => {
+    return new Promise((resolve, reject) => {
+        db.get().collection(collections.ORDER_COLLECTIONS)
+            .updateOne(
+                { _id: new objectId(orderId) },
+                { $set: { status: 'placed' } }
+            )
+            .then(() => resolve())
     })
 }
 };
