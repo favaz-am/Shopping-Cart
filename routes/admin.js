@@ -48,5 +48,9 @@ router.post("/edit-product/:id", async (req, res) => {
     }
     res.redirect("/admin")
 })
+router.get('/users', async (req, res) => {
+    let users = await userHelper.getAllUsers()
+    res.render('admin/users', { admin: true, users })
+})
 
 module.exports = router;
