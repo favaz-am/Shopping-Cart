@@ -97,12 +97,22 @@ router.get("/checkout", verifyLogin, async (req, res) => {
   let totalPrice = await userHelper.orderSummary(user._id);
   res.render("user/checkout", { products, user, totalPrice, cartCount });
 });
-router.post("/checkout", verifyLogin, async (req, res) => {
-  let products = await userHelper.getCartProductList(req.body.userId);
-  let totalPrice = await userHelper.orderSummary(req.body.userId);
-  userHelper.placeOrder(req.body, products, totalPrice).then(() => {
-    res.json({ status: true });
-  });
+router.post('/checkout', verifyLogin, async (req, res) => {
+    let products = await userHelper.getCartProductList(req.body.userId)
+    let totalPrice = await userHelper.orderSummary(req.body.userId)
+    
+    if(req.body.paymentMethod === 'online') {
+        // generate razorpay order first
+        userHelper.placeOrder(req.body, products, totalPrice).then(async (orderId) => {
+            let razorpayOrder = await userHelper.generateRazorpay(orderId, totalPrice)
+            res.json({ status: true, razorpay: true, razorpayOrder })
+        })
+    } else {
+        // cod - place order directly
+        userHelper.placeOrder(req.body, products, totalPrice).then(() => {
+            res.json({ status: true, codSuccess: true })
+        })
+    }
 });
 router.get("/orders", verifyLogin, async (req, res) => {
   let user = req.session.user;
