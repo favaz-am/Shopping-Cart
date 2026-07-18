@@ -1,0 +1,35 @@
+<section class="bg-light min-vh-100 py-5">
+  <div class="container">
+    <div class="d-flex justify-content-between align-items-center mb-4">
+      <h3 class="fw-bold mb-0">All Users</h3>
+      <span class="badge bg-primary fs-6">Total: {{users.length}}</span>
+    </div>
+
+    <div class="card shadow-sm border-0 rounded-4">
+      <div class="card-body p-0">
+        <table class="table table-hover align-middle mb-0">
+          <thead class="table-dark">
+            <tr>
+              <th class="ps-4">No</th>
+              <th>Name</th>
+              <th>Email</th>
+              <th class="text-center">Actions</th>
+            </tr>
+          </thead>
+          <tbody>
+            {{#each users}}
+            <tr>
+              <td class="ps-4 text-muted">{{increment @index}}</td>
+              <td class="fw-semibold">{{this.name}}</td>
+              <td class="text-muted">{{this.email}}</td>
+              <td class="text-center">
+                <a href="/admin/view-user-orders/{{this._id}}" class="btn btn-sm btn-outline-primary">View Orders</a>
+              </td>
+            </tr>
+            {{/each}}
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+</section>
