@@ -1,6 +1,7 @@
 var express = require("express");
 var router = express.Router();
 var productHelper = require("../helpers/product-helpers");
+var userHelper = require("../helpers/user-helpers");
 
 /* GET users listing. */
 router.get("/", function (req, res, next) {
