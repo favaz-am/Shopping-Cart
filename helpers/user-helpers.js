@@ -373,5 +373,14 @@ updatePayment: (orderId) => {
             )
             .then(() => resolve())
     })
+},
+getAllUsers: () => {
+    return new Promise(async (resolve, reject) => {
+        let users = await db.get()
+            .collection(collections.USER_COLLECTIONS)
+            .find()
+            .toArray()
+        resolve(users)
+    })
 }
 };
