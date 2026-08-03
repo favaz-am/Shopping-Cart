@@ -1,0 +1,40 @@
+<section class="bg-light min-vh-100 py-5">
+  <div class="container">
+    <div class="d-flex justify-content-between align-items-center mb-4">
+      <h3 class="fw-bold mb-0">Order Products</h3>
+      <a href="/admin/orders" class="btn btn-outline-secondary">← Back to Orders</a>
+    </div>
+
+    <div class="card shadow-sm border-0 rounded-4">
+      <div class="card-body p-0">
+        <table class="table table-hover align-middle mb-0">
+          <thead class="table-dark">
+            <tr>
+              <th class="ps-4">No</th>
+              <th>Image</th>
+              <th>Name</th>
+              <th>Category</th>
+              <th>Price</th>
+              <th>Quantity</th>
+            </tr>
+          </thead>
+          <tbody>
+            {{#each products}}
+            <tr>
+              <td class="ps-4 text-muted">{{increment @index}}</td>
+              <td>
+                <img src="/product-images/{{this.item}}.jpg"
+                  style="width:60px; height:60px; object-fit:cover; border-radius:8px;">
+              </td>
+              <td class="fw-semibold">{{this.product.productName}}</td>
+              <td><span class="badge bg-secondary">{{this.product.productCategory}}</span></td>
+              <td class="text-success fw-semibold">₹{{this.product.productPrice}}</td>
+              <td>{{this.quantity}}</td>
+            </tr>
+            {{/each}}
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+</section>
